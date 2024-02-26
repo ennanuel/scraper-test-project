@@ -12,7 +12,10 @@ route.get('/:searchValue/:page', async function (req, res) {
         if (!searchValue) throw new Error('You have to search for something!');
 
         const shouldWaitForCoolDown = checkIfShouldWaitForCoolDown();
-        if (shouldWaitForCoolDown) await waitForCoolDown();
+        if (shouldWaitForCoolDown) {
+            console.warn("Waiting for cool down please wait...")
+            await waitForCoolDown();
+        }
 
         const pageNum = /nan/i.test(Number(page)) ? 1 : Number(page);
         const searchUrl = `https://www.amazon.com/s?crid=36QNR0DBY6M7J&k=${searchValue}&page=${pageNum}&ref=glow_cls&refresh=1&sprefix=s%2Caps%2C309`;
