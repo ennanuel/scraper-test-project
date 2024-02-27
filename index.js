@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import bp from "body-parser";
+
 import searchRoute from "./api/routes/search.js";
 
 dotenv.config();
@@ -18,7 +19,7 @@ app.use(
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
 
-app.use(express.static("/public"));
+app.use(express.static("public"));
 app.use("/v1/api/search", searchRoute);
 
 app.listen(PORT, () => {
