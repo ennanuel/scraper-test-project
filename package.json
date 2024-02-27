@@ -5,7 +5,7 @@
   "description": "A project that scrapes data from amazon search",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon index.js --ignore ./api/log.json",
     "test": "jest",
     "test:watch": "jest --watch"
   },
