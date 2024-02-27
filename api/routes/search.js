@@ -6,19 +6,24 @@ import { updateLog } from "../utils/log.js";
 
 const route = Router();
 
+const convertStringToNumber = (value) => /nan/i.test(Number(value)) ? 1 : Number(value);
+
 route.get('/:searchValue/:page', async function (req, res) {
     try {
         const { searchValue, page = 1 } = req.params;
         if (!searchValue) throw new Error('You have to search for something!');
 
-        const shouldWaitForCoolDown = checkIfShouldWaitForCoolDown();
+        // This cooldown logic is meant to avoid being noticed by Amazon's anti-bot measures
+        const { shouldWaitForCoolDown, byHowLong } = checkIfShouldWaitForCoolDown();
         if (shouldWaitForCoolDown) {
-            console.warn("Waiting for cool down please wait...")
-            await waitForCoolDown();
+            console.warn("Waiting for cool down please wait...");
+            await waitForCoolDown(byHowLong);
         }
 
-        const pageNum = /nan/i.test(Number(page)) ? 1 : Number(page);
+        const pageNum = convertStringToNumber(page);
         const searchUrl = `https://www.amazon.com/s?crid=36QNR0DBY6M7J&k=${searchValue}&page=${pageNum}&ref=glow_cls&refresh=1&sprefix=s%2Caps%2C309`;
+
+        // Without this header, the fetch would always return a 503 error.
         const headers = { 'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:80.0) Gecko/20100101 Firefox/80.0' };
 
         const response = await axios.get(searchUrl, { headers });
@@ -40,8 +45,8 @@ route.get('/:searchValue/:page', async function (req, res) {
         );
 
         const pagination = $("span.s-pagination-strip span.s-pagination-item.s-pagination-disabled").text();
-        const matchedNumberOfPages = pagination.match(/\d+$/);
-        const totalPages = matchedNumberOfPages[0];
+        const pagesFound = pagination.match(/\d+$/, '');
+        const totalPages = convertStringToNumber(pagesFound ? pagesFound[0] : 0);
         
         const result = {
             products,
@@ -49,6 +54,7 @@ route.get('/:searchValue/:page', async function (req, res) {
             totalPages
         };
 
+        // This updates the 'log.json' file for cooldown logic
         updateLog();
 
         return res.status(200).json(result);
