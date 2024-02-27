@@ -3,9 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR3XoM3533zkDJQUH1eqc4X3wQaBQ9GMewEQ&usqp=CAU">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./variables.css">
+    <title>Amazon Searcher</title>
 </head>
-<body>
-    
+<body id="home" class="w-full flex-col flex items-center justify-center">
+    <div class="home-header flex flex-col justify-center items-center">
+        <div class="logo flex items-center">
+            <i class="icon fa fa-amazon"></i>
+            <h1>Amazon Searcher</h1>
+        </div>
+        <p>Search products from Amazon.</p>
+    </div>
+    <form method="GET" action="search.html" id="search-form" class="flex w-full">
+        <input type="text" name="search" placeholder="Product name eg: Fishing net, Soccer ball, etc.">
+        <button type="submit flex items-center justify-center">
+            <i class="fa fa-search"></i>
+        </button>
+    </form>
+    <div class="recommendation relative w-full">
+        <p class="recommendation-desc border absolute">Recommended Searches</p>
+        <ul class="recommendation-list border">
+            <li>
+                <a href="search.html?search=fishing+pole" class="relative flex items-center">Fishing pole</a>
+            </li>
+            <li>
+                <a href="search.html?search=skateboard" class="relative flex items-center">Skateboard</a>
+            </li>
+            <li>
+                <a href="search.html?search=football" class="relative flex items-center">Football</a>
+            </li>
+            <li>
+                <a href="search.html?search=dancing+shoes" class="relative flex items-center">Dancing shoes</a>
+            </li>
+            <li>
+                <a href="search.html?search=laptop" class="relative flex items-center">Laptop</a>
+            </li>
+            <li>
+                <a href="search.html?search=power+brick" class="relative flex items-center">Power brick</a>
+            </li>
+            <li>
+                <a href="search.html?search=flatscreen+tv" class="relative flex items-center">Flatscreen TV</a>
+            </li>
+        </ul>
+    </div>
 </body>
 </html>
